@@ -6,10 +6,22 @@ body {
     font-size: 28px;
 }
 
-a:link      { color: hotpink; text-decoration: none; }
-a:visited   { color: hotpink; }
-a:active    { color: hotpink; }
-a:hover     { color: deeppink; }
+a:link {
+    color: hotpink;
+    text-decoration: none;
+}
+
+a:visited {
+    color: hotpink;
+}
+
+a:active {
+    color: hotpink;
+}
+
+a:hover {
+    color: deeppink;
+}
 
 h1 {
     font-size: 64px;
@@ -17,17 +29,17 @@ h1 {
     text-align: center;
     letter-spacing: 5px;
     margin-top: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
-p{
+p {
     text-align: center;
     margin-top: 5px;
     margin-bottom: 25px;
     letter-spacing: 2px;
 }
 
-.board {
+#board {
     width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -45,7 +57,7 @@ p{
     cursor: pointer;
     filter: brightness(90%);
     transition: all .3s ease-in-out;
-    }
+}
 
 .card:hover {
     border: 4px solid deeppink;
@@ -62,18 +74,21 @@ p{
     cursor: default;
     filter: brightness(110%);
     transition: all .3s ease-in-out;
-    }
+}
 
 .score {
     letter-spacing: 2px;
     margin-top: 5px;
 }
+
 .again {
     width: 200px;
     background-color: pink;
     border: 2px solid deeppink;
     border-radius: 6px;
+    cursor: pointer;
 }
+
 .again:hover {
     background-color: lightpink;;
     border: 2px solid deeppink;
@@ -82,18 +97,23 @@ p{
 .cat1 {
     background-image: url("img/cat1.jpg");
 }
+
 .cat2 {
     background-image: url("img/cat2.jpg");
 }
+
 .cat3 {
     background-image: url("img/cat3.jpg");
 }
+
 .cat4 {
     background-image: url("img/cat4.jpg");
 }
+
 .cat5 {
     background-image: url("img/cat5.jpg");
 }
+
 .cat6 {
     background-image: url("img/cat6.jpg");
 }
@@ -101,6 +121,7 @@ p{
 .off {
     opacity: 0;
 }
+
 .hidden {
-    background-color: url("img/cat0.jpg");
+    background-image: url("img/cat0.jpg");
 }

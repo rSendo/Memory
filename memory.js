@@ -1,104 +1,106 @@
-var cards = ["cat3.jpg", "cat1.jpg", "cat5.jpg", "cat4.jpg", "cat6.jpg", "cat4.jpg", "cat2.jpg", "cat1.jpg", "cat2.jpg", "cat5.jpg", "cat3.jpg", "cat6.jpg"];
+const imgList = ["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4", "cat5", "cat5", "cat6", "cat6"];
 
+let cardDivs = document.querySelectorAll(".card");
+cardDivs = [...cardDivs];
 
-var c0 = document.getElementById('c0');
-var c1 = document.getElementById('c1');
-var c2 = document.getElementById('c2');
-var c3 = document.getElementById('c3');
+const startTime = new Date().getTime();
 
-var c4 = document.getElementById('c4');
-var c5 = document.getElementById('c5');
-var c6 = document.getElementById('c6');
-var c7 = document.getElementById('c7');
+let currentClickedCard = null; //która karta została aktualnie kliknięta
+let currentRoundCards = []; //tablica dla dwóch kart
+let roundsCount = 0; //Informacja o wyniku - ile par udało się odgadnąć
+let matchCardsCount = 0;
 
-var c8 = document.getElementById('c8');
-var c9 = document.getElementById('c9');
-var c10 = document.getElementById('c10');
-var c11 = document.getElementById('c11');
+//losowanie klasy do każdego diva
+cardDivs.forEach(cardDiv => {
 
-c0.addEventListener("click", function() {revealCard(0);});
-c1.addEventListener("click", function() {revealCard(1);});
-c2.addEventListener("click", function() {revealCard(2);});
-c3.addEventListener("click", function() 
-{revealCard(3);});
+    const position = Math.floor(Math.random() * imgList.length); //pozycja z tablicy przechowującej kolory
 
-c4.addEventListener("click", function() {revealCard(4);});
-c5.addEventListener("click", function() {revealCard(5);});
-c6.addEventListener("click", function() {revealCard(6);});
-c7.addEventListener("click", function() {revealCard(7);});
+    cardDiv.classList.add(imgList[position]); //dodanie klasy do danego div-a
 
-c8.addEventListener("click", function() {revealCard(8);});
-c9.addEventListener("click", function() {revealCard(9);});
-c10.addEventListener("click", function() {revealCard(10);});
-c11.addEventListener("click", function() {revealCard(11);});
+    imgList.splice(position, 1); //usunięcie wylosowanego elementu, krótsza tablica przy kolejnym losowaniu
+});
 
-var oneVisible = false;
-var turnCounter = 0;
-var visible_nr;
-var lock = false;
-var pairsLeft = 6;
+//Po 2 sekundach dodanie klasy hidden - ukrycie i dodanie nasłuchiwania na klik
+setTimeout(function () {
+    cardDivs.forEach(card => {
+        card.classList.add("hidden");
+        card.addEventListener("click", clickCard)
+    })
+}, 2000);
 
+function clickCard() {
+    currentClickedCard = this;
 
-function revealCard(nr) {
-    var opacityValue = $('#c'+nr).css('opacity');
-    if (opacityValue != 0 && lock == false) {
-        
-        lock = true;
-        
-        var obraz = "url(img/" + cards[nr] + ")";
+    const isClickedSameCard = currentClickedCard === currentRoundCards[0];
 
-        $('#c'+nr).css('background-image', obraz);
-        $('#c'+nr).addClass('cardA');
-        $('#c'+nr).removeClass('cardA');
-
-        if(oneVisible == false) {
-            //first card
-            oneVisible = true;
-            visible_nr = nr;
-            lock = false;
-        }
-        else {
-        
-            //second card
-            if(cards[visible_nr] == cards[nr]) {
-                //alert("para");
-                setTimeout(function(){hide2Cards(nr, visible_nr)}, 750);
-
-            }
-            else {
-            //alert("pudło");
-                setTimeout(function(){restore2Cards(nr, visible_nr)}, 1500);
-            }
-
-            turnCounter++;
-            $('.score').html('Turn counter: ' +turnCounter);
-            oneVisible = false;
-            }
-        }
-    
+    if (isClickedSameCard) {
+        return;
     }
-    
-function hide2Cards(nr1, nr2) {
-    $('#c'+nr1).css('opacity', '0');
-    $('#c'+nr2).css('opacity', '0');
-    pairsLeft--;
-    lock = false;
-    
-    if(pairsLeft == 0) {
-        $('.board').html('<br><h1>You win!<br>Done in: ' + turnCounter + ' turns</h1><br><br><button class="again" onclick="reload()">Try again</button>');
+
+    currentClickedCard.classList.remove("hidden"); //ukrycie różowego kotka i pokazanie karty
+
+    if (currentRoundCards.length === 0) {
+        console.log("Wybrana piersza karta z pary");
+        currentRoundCards[0] = currentClickedCard; //przypisanie do pozycji numer 1 wybranej karty
+        return;
     }
+
+    console.log("Wybrana druga karta z pary");
+
+    cardDivs.forEach(card => card.removeEventListener("click", clickCard)); //na chwilę zdejmujemy możliwość kliknięcie
+
+    currentRoundCards[1] = currentClickedCard; //ustawienie drugiego kliknięcia w tablicy w indeksie 1
+
+    setTimeout(checkPair, 500); //Pół sekundy od odsłoniecia - decyzja czy dobrze czy źle
 }
 
-function reload() {
-    window.location.reload();
+function processValidPair() {
+    console.log("Poprawna para");
+
+    ++matchCardsCount;
+    document.getElementById('maches').innerText = matchCardsCount.toString();
+
+    currentRoundCards.forEach(card => card.classList.add("off"));
+    cardDivs = cardDivs.filter(card => !card.classList.contains("off"));
+
+    checkEndOfGame();
 }
 
- function restore2Cards(nr1, nr2) {
-    $('#c'+nr1).css('background-image', 'url(img/cat0.jpg)');
-    $('#c'+nr1).addClass('card');
-    $('#c'+nr1).removeClass('cardA');
-    $('#c'+nr2).css('background-image', 'url(img/cat0.jpg)');
-    $('#c'+nr2).addClass('card');
-    $('#c'+nr2).removeClass('cardA');
-    lock = false;
- }
+function processInvalidPair() {
+    console.log("Błędna para");
+    currentRoundCards.forEach(card => card.classList.add("hidden"));
+}
+
+function checkPair() {
+    ++roundsCount;
+    document.getElementById('turns').innerText = roundsCount.toString();
+
+    const isValidPair = currentRoundCards[0].className === currentRoundCards[1].className;
+
+    if (isValidPair) {
+        processValidPair();
+    } else {
+        processInvalidPair();
+    }
+
+    nextRound();
+}
+
+function nextRound() {
+    currentClickedCard = null;
+    currentRoundCards = [];
+    cardDivs.forEach(cardDiv => cardDiv.addEventListener("click", clickCard)) //przywrócenie nasłuchiwania
+}
+
+function checkEndOfGame() {
+    if (cardDivs.length !== 0) {
+        return;
+    }
+
+    const endTime = new Date().getTime();
+    const gameTime = ((endTime - startTime) / 1000).toFixed(2);
+
+    document.getElementById('board').innerHTML = '<br><h1>You win!<br>Done in: ' + roundsCount
+        + ' turns</h1><br><p>your time: ' + gameTime + ' seconds</p><br><button class="again" onclick="window.location.reload()">Try again</button>';
+}
+
