@@ -1,1 +1,1 @@
-# Memory
+Memory game - learning jQuery

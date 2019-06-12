@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    background-color: #26282E;
+    color: hotpink;
+    font-family: 'Lobster', sans-serif;
+    font-size: 28px;
+}
+
+a:link      { color: hotpink; text-decoration: none; }
+a:visited   { color: hotpink; }
+a:active    { color: hotpink; }
+a:hover     { color: deeppink; }
+
+h1 {
+    font-size: 64px;
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 5px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+p{
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.board {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.card {
+    width: 125px;
+    height: 125px;
+    display: inline-block;
+    margin: 3px;
+    background-image: url('img/cat0.jpg');
+    border: 4px solid hotpink;
+    border-radius: 4px;
+    cursor: pointer;
+    filter: brightness(90%);
+    transition: all .3s ease-in-out;
+    }
+
+.card:hover {
+    border: 4px solid deeppink;
+    filter: brightness(110%);
+}
+
+.cardA {
+    width: 125px;
+    height: 125px;
+    display: inline-block;
+    margin: 3px;
+    border: 4px solid deeppink;
+    border-radius: 4px;
+    cursor: default;
+    filter: brightness(110%);
+    transition: all .3s ease-in-out;
+    }
+
+.score {
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+.again {
+    width: 200px;
+    background-color: pink;
+    border: 2px solid deeppink;
+    border-radius: 6px;
+}
+.again:hover {
+    background-color: lightpink;;
+    border: 2px solid deeppink;
+}
+
+.cat1 {
+    background-image: url("img/cat1.jpg");
+}
+.cat2 {
+    background-image: url("img/cat2.jpg");
+}
+.cat3 {
+    background-image: url("img/cat3.jpg");
+}
+.cat4 {
+    background-image: url("img/cat4.jpg");
+}
+.cat5 {
+    background-image: url("img/cat5.jpg");
+}
+.cat6 {
+    background-image: url("img/cat6.jpg");
+}
+
+.off {
+    opacity: 0;
+}
+.hidden {
+    background-color: url("img/cat0.jpg");
+}
